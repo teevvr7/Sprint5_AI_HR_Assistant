@@ -23,7 +23,7 @@ Answering these manually takes valuable HR time and risks inconsistent interpret
    - Decides whether a tool is required or if it can directly formulate a response.
 
 2. **RAG Knowledge Retrieval (`search_handbook`)**:
-   - Ingests and indexes the company handbook using `PyPDFLoader`, `RecursiveCharacterTextSplitter`, and `InMemoryVectorStore` with OpenAI embeddings (`text-embedding-3-small`).
+   - Ingests and indexes the company handbook using LangChain document loaders, `RecursiveCharacterTextSplitter`, and `InMemoryVectorStore` with OpenAI embeddings (`text-embedding-3-small`).
    - Retrieves relevant policy clauses on demand as a tool rather than a rigid pipeline.
 
 3. **7 Deterministic HR Calculation & Validation Tools**:
@@ -82,14 +82,13 @@ flowchart TD
 ```
 Sprint5_AI_HR_Assistant/
 ├── .env.example           # Environment template for OpenAI credentials
-├── .gitignore             # Git ignore file (excludes PDFs, .env, and virtual environments)
+├── .gitignore             # Git ignore file (excludes secrets, local data, and virtual environments)
 ├── app.py                 # Interactive terminal chat interface
 ├── LICENSE                # MIT License
 ├── README.md              # Project documentation
 ├── requirements.txt       # Python dependencies
 ├── data/
-│   ├── .gitkeep           # Keeps directory in git
-│   └── PROITBRIDGE_Employee_Handbook_2026_1.pdf  # (Excluded from git) Place PDF here
+│   └── .gitkeep           # Keeps directory in git
 └── src/
     ├── __init__.py        # Package initialization
     ├── assistant.py       # High-level assistant interface and execution tracer
@@ -99,9 +98,6 @@ Sprint5_AI_HR_Assistant/
     ├── rag.py             # Document loading, splitting, vector store & search tool
     └── tools.py           # 7 HR calculation & validation tools
 ```
-
-> [!NOTE]
-> The employee handbook PDF (`PROITBRIDGE_Employee_Handbook_2026_1.pdf`) is deliberately ignored from GitHub version control via `.gitignore` to protect internal company data. Place your handbook PDF inside the `data/` folder before running.
 
 ---
 
@@ -146,13 +142,6 @@ Edit `.env` and insert your OpenAI API key:
 
 ```env
 OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxxxxxxxxx
-```
-
-### 5. Place Employee Handbook
-
-Ensure the handbook PDF is located at:
-```
-data/PROITBRIDGE_Employee_Handbook_2026_1.pdf
 ```
 
 ---
@@ -204,7 +193,7 @@ Ask your HR question:
 ## 🔒 Security & Best Practices
 
 - **Secrets Management**: `.env` is explicitly ignored in `.gitignore` to prevent secret leaks.
-- **Data Privacy**: Proprietary company handbook PDFs in `data/` are omitted from version control.
+- **Data Privacy**: Local policy documents and sensitive files in `data/` are omitted from version control.
 - **Deterministic Validations**: Financial and leave eligibility checks execute via strictly validated Python code rather than model approximations.
 
 ---
